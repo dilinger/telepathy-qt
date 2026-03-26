@@ -37,21 +37,21 @@ namespace Tp
 
 namespace
 {
-    ChannelClassSpecList buildFilter(const QStringList &p2pServices,
-            const QStringList &roomServices, bool requested)
+    ChannelClassSpecList buildFilter(QStringList p2pServices,
+            QStringList roomServices, bool requested)
     {
         ChannelClassSpecList filter;
 
-        // Convert to QSet to weed out duplicates
-        foreach (const QString &service, p2pServices.toSet())
+        p2pServices.removeDuplicates();
+        foreach (const QString &service, p2pServices)
         {
             filter.append(requested ?
                     ChannelClassSpec::outgoingStreamTube(service) :
                     ChannelClassSpec::incomingStreamTube(service));
         }
 
-        // Convert to QSet to weed out duplicates
-        foreach (const QString &service, roomServices.toSet())
+        roomServices.removeDuplicates();
+        foreach (const QString &service, roomServices)
         {
             filter.append(requested ?
                     ChannelClassSpec::outgoingRoomStreamTube(service) :
