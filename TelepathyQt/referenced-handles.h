@@ -231,9 +231,14 @@ public:
 #ifndef QT_NO_STL
     inline std::list<uint> toStdList() const
     {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+        auto l = toList();
+        return l.isEmpty() ? std::list<uint>() : std::list<uint>(l.begin(), l.end());
+#else
         return toList().toStdList();
+#endif // !(QT_VERSION >= 5.14.0)
     }
-#endif
+#endif // !QT_NO_STL
 
     inline QVector<uint> toVector() const
     {
