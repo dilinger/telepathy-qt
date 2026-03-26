@@ -76,7 +76,7 @@ SimpleObserver::Private::Private(SimpleObserver *parent,
                 .replace(QLatin1String("."), QLatin1String("_")))
             .arg(numObservers++);
         observer = SharedPtr<Observer>(new Observer(cr, fakeAccountFactory,
-                    normalizedChannelFilter.toList(), observerName));
+                    normalizedChannelFilter.values(), observerName));
         if (!cr->registerClient(observer, observerName, false)) {
             warning() << "Unable to register observer" << observerName;
             observer.reset();
@@ -146,7 +146,7 @@ void SimpleObserver::Private::insertChannels(const AccountPtr &channelsAccount,
     }
 
     channels.unite(match);
-    emit parent->newChannels(match.toList());
+    emit parent->newChannels(match.values());
 }
 
 void SimpleObserver::Private::removeChannel(const AccountPtr &channelAccount,
@@ -529,7 +529,7 @@ QList<ChannelClassFeatures> SimpleObserver::extraChannelFeatures() const
  */
 QList<ChannelPtr> SimpleObserver::channels() const
 {
-    return mPriv->channels.toList();
+    return mPriv->channels.values();
 }
 
 /**

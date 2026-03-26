@@ -891,7 +891,7 @@ PendingOperation *Contact::unblock()
  */
 QStringList Contact::groups() const
 {
-    return mPriv->groups.toList();
+    return mPriv->groups.values();
 }
 
 /**

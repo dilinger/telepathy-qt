@@ -457,7 +457,7 @@ void TextChannel::Private::processChatStateQueue()
     // TODO: pass id hints to ContactManager if we ever gain support to retrieve contact ids
     //       from ChatState.
     parent->connect(parent->connection()->contactManager()->contactsForHandles(
-                contactsRequired.toList()),
+                contactsRequired.values()),
             SIGNAL(finished(Tp::PendingOperation*)),
             SLOT(onContactsFinished(Tp::PendingOperation*)));
 

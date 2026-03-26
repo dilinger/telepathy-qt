@@ -170,7 +170,7 @@ void CallStream::Private::processRemoteMembersChanged()
 
         ContactManagerPtr contactManager = connection->contactManager();
         PendingContacts *contacts = contactManager->contactsForHandles(
-                pendingRemoteMembers.toList());
+                pendingRemoteMembers.values());
         parent->connect(contacts,
                 SIGNAL(finished(Tp::PendingOperation*)),
                 SLOT(gotRemoteMembersContacts(Tp::PendingOperation*)));

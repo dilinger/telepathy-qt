@@ -834,7 +834,7 @@ void Channel::Private::buildContacts()
     ContactManagerPtr manager = connection->contactManager();
     UIntList toBuild = QSet<uint>(pendingGroupMembers +
             pendingGroupLocalPendingMembers +
-            pendingGroupRemotePendingMembers).toList();
+            pendingGroupRemotePendingMembers).values();
 
     if (currentGroupMembersChangedInfo &&
             currentGroupMembersChangedInfo->actor != 0) {

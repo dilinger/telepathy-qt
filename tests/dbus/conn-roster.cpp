@@ -358,7 +358,7 @@ void TestConnRoster::testRoster()
     QCOMPARE(ids, toCheck);
 
     // block all contacts
-    QList<ContactPtr> contactsList = contactManager->allKnownContacts().toList();
+    QList<ContactPtr> contactsList = contactManager->allKnownContacts().values();
     QSet<QString> contactIdsList;
     Q_FOREACH (const ContactPtr &contact, contactsList) {
         QVERIFY(connect(contact.data(),

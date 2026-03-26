@@ -319,7 +319,7 @@ void CallChannel::Private::processCallMembersChanged()
 
         ContactManagerPtr contactManager = connection->contactManager();
         PendingContacts *contacts = contactManager->contactsForHandles(
-                pendingCallMembers.toList());
+                pendingCallMembers.values());
         parent->connect(contacts,
                 SIGNAL(finished(Tp::PendingOperation*)),
                 SLOT(gotCallMembersContacts(Tp::PendingOperation*)));

@@ -758,7 +758,7 @@ void AbstractClientHandler::Capabilities::unsetToken(const QString &token)
 
 QStringList AbstractClientHandler::Capabilities::allTokens() const
 {
-    return mPriv->tokens.toList();
+    return mPriv->tokens.values();
 }
 
 struct TP_QT_NO_EXPORT AbstractClientHandler::HandlerInfo::Private : public QSharedData
