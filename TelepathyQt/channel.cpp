@@ -3138,13 +3138,19 @@ void Channel::gotContacts(PendingOperation *op)
 void Channel::onGroupFlagsChanged(uint added, uint removed)
 {
     debug().nospace() << "Got Channel.Interface.Group::GroupFlagsChanged(" <<
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+        Qt::
+#endif
         hex << added << ", " << removed << ")";
 
     added &= ~(mPriv->groupFlags);
     removed &= mPriv->groupFlags;
 
-    debug().nospace() << "Arguments after filtering (" << hex << added <<
-        ", " << removed << ")";
+    debug().nospace() << "Arguments after filtering (" <<
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+        Qt::
+#endif
+        hex << added << ", " << removed << ")";
 
     uint groupFlags = mPriv->groupFlags;
     groupFlags |= added;
