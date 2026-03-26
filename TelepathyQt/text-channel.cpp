@@ -410,12 +410,16 @@ void TextChannel::Private::processMessageQueue()
     ConnectionPtr conn = parent->connection();
     conn->lowlevel()->injectContactIds(contactsRequired);
 
-    parent->connect(conn->contactManager()->contactsForHandles(
-                contactsRequired.keys()),
+    auto contactKeys = contactsRequired.keys();
+    parent->connect(conn->contactManager()->contactsForHandles(contactKeys),
             SIGNAL(finished(Tp::PendingOperation*)),
             SLOT(onContactsFinished(Tp::PendingOperation*)));
 
-    awaitingContacts |= contactsRequired.keys().toSet();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    awaitingContacts |= QSet<uint>(contactKeys.begin(), contactKeys.end());
+#else
+    awaitingContacts |= contactKeys.toSet();
+#endif
 }
 
 void TextChannel::Private::processChatStateQueue()

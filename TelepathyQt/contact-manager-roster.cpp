@@ -1338,7 +1338,13 @@ void ContactManager::Roster::gotContactListGroupsProperties(PendingOperation *op
 
     QVariantMap props = pvm->result();
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    auto groups = qdbus_cast<QStringList>(props[QLatin1String("Groups")]);
+    cachedAllKnownGroups = groups.isEmpty() ? QSet<QString>() :
+            QSet<QString>(groups.begin(), groups.end());
+#else
     cachedAllKnownGroups = qdbus_cast<QStringList>(props[QLatin1String("Groups")]).toSet();
+#endif
     contactListGroupPropertiesReceived = true;
 
     processingContactListChanges = true;

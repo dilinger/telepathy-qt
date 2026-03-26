@@ -225,7 +225,12 @@ public:
 
     inline QSet<uint> toSet() const
     {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+        auto h = toList();
+        return h.isEmpty() ? QSet<uint>() : QSet<uint>(h.begin(), h.end());
+#else
         return toList().toSet();
+#endif
     }
 
 #ifndef QT_NO_STL

@@ -505,7 +505,12 @@ Contacts CallChannel::remoteMembers() const
         return Contacts();
     }
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    auto mem = mPriv->callMembersContacts.values();
+    return mem.isEmpty() ? Contacts() : Contacts(mem.begin(), mem.end());
+#else
     return mPriv->callMembersContacts.values().toSet();
+#endif
 }
 
 /**
@@ -1008,7 +1013,13 @@ void CallChannel::gotCallMembersContacts(PendingOperation *op)
         }
 
         if (!removed.isEmpty()) {
-            emit remoteMembersRemoved(removed.values().toSet(),
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+            auto rem = removed.values();
+            Contacts removedMembers(rem.begin(), rem.end());
+#else
+            Contacts removedMembers = removed.values().toSet();
+#endif
+            emit remoteMembersRemoved(removedMembers,
                     mPriv->currentCallMembersChangedInfo->reason);
         }
     }
