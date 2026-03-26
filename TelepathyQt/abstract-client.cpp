@@ -711,7 +711,11 @@ struct TP_QT_NO_EXPORT AbstractClientHandler::Private
 struct TP_QT_NO_EXPORT AbstractClientHandler::Capabilities::Private : public QSharedData
 {
     Private(const QStringList &tokens)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+        : tokens(tokens.isEmpty() ? QSet<QString>() : QSet<QString>(tokens.begin(), tokens.end())) {}
+#else
         : tokens(QSet<QString>::fromList(tokens)) {}
+#endif
 
     QSet<QString> tokens;
 };

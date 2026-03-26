@@ -422,7 +422,11 @@ void TestConnRosterLegacy::testRoster()
                             Tp::Channel::GroupMemberChangeDetails))));
 
     mBlockingContactsFinished = false;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    mContactsExpectingBlockStatusChange = QSet<QString>(ids.begin(), ids.end());
+#else
     mContactsExpectingBlockStatusChange = ids.toSet();
+#endif
 
     QVERIFY(connect(contactManager->blockContacts(contacts),
                     SIGNAL(finished(Tp::PendingOperation*)),
@@ -441,7 +445,11 @@ void TestConnRosterLegacy::testRoster()
 
     // now unblock them again
     mBlockingContactsFinished = false;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    mContactsExpectingBlockStatusChange = QSet<QString>(ids.begin(), ids.end());
+#else
     mContactsExpectingBlockStatusChange = ids.toSet();
+#endif
 
     QVERIFY(connect(contactManager->unblockContacts(contacts),
             SIGNAL(finished(Tp::PendingOperation*)),

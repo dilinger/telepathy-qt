@@ -56,7 +56,12 @@ SimpleObserver::Private::Private(SimpleObserver *parent,
       contactIdentifier(contactIdentifier),
       extraChannelFeatures(extraChannelFeatures)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    QSet<ChannelClassSpec> normalizedChannelFilter = channelFilter.isEmpty() ? QSet<ChannelClassSpec>() :
+            QSet<ChannelClassSpec>(channelFilter.begin(), channelFilter.end());
+#else
     QSet<ChannelClassSpec> normalizedChannelFilter = channelFilter.toSet();
+#endif
     QPair<QString, QSet<ChannelClassSpec> > observerUniqueId(
             account->dbusConnection().baseService(), normalizedChannelFilter);
     observer = SharedPtr<Observer>(observers.value(observerUniqueId));

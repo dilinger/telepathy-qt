@@ -1216,7 +1216,11 @@ void ContactManager::requestContactAvatars(const QList<ContactPtr> &contacts)
         QTimer::singleShot(0, this, SLOT(doRequestAvatars()));
     }
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    mPriv->requestAvatarsQueue.unite(Contacts(contacts.begin(), contacts.end()));
+#else
     mPriv->requestAvatarsQueue.unite(contacts.toSet());
+#endif
 }
 
 /**
