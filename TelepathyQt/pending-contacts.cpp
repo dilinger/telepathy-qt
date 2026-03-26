@@ -708,7 +708,15 @@ void PendingAddressingGetContacts::onGetContactsFinished(QDBusPendingCallWatcher
 
         mValidHandles = requested.values();
         mValidAddresses = requested.keys();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+        auto addresses = mAddresses.isEmpty() ? QSet<QString>() :
+                QSet<QString>(mAddresses.begin(), mAddresses.end());
+        if (!mValidAddresses.isEmpty())
+            addresses.subtract(QSet<QString>(mValidAddresses.begin(), mValidAddresses.end()));
+        mInvalidAddresses = addresses.values();
+#else
         mInvalidAddresses = mAddresses.toSet().subtract(mValidAddresses.toSet()).values();
+#endif
         mAttributes = reply.argumentAt<1>();
         setFinished();
     } else {
