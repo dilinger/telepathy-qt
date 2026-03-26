@@ -1090,7 +1090,7 @@ void TestAccountChannelDispatcher::testCreateAndHandleChannelHandledAgain()
     connect(notifier,
             SIGNAL(handledAgain(QDateTime,Tp::ChannelRequestHints)),
             SLOT(onChannelHandledAgain(QDateTime,Tp::ChannelRequestHints)));
-    QDateTime timestamp(QDate::currentDate());
+    QDateTime timestamp(QDateTime::fromSecsSinceEpoch(QDateTime::currentSecsSinceEpoch()));
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 8, 0)
     mChannelDispatcherAdaptor->invokeHandler(timestamp.toTime_t());
