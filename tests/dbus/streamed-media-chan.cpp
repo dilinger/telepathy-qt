@@ -1152,8 +1152,8 @@ void TestStreamedMediaChan::testHoldNoUnhold()
     // Request unhold (fail)
     QVERIFY(connect(mChan->requestHold(false),
                     SIGNAL(finished(Tp::PendingOperation*)),
-                    SLOT(expectSuccessfulCall(Tp::PendingOperation*))));
-    QCOMPARE(mLoop->exec(), 1);
+                    SLOT(expectFailure(Tp::PendingOperation*))));
+    QCOMPARE(mLoop->exec(), 0);
     QCOMPARE(mLocalHoldStates.size(), 0);
     QCOMPARE(mLocalHoldStateReasons.size(), 0);
     QCOMPARE(static_cast<uint>(mChan->localHoldState()), static_cast<uint>(LocalHoldStateHeld));
@@ -1296,14 +1296,14 @@ void TestStreamedMediaChan::testDTMF()
     // start dtmf (must fail)
     QVERIFY(connect(stream->startDTMFTone(DTMFEventDigit0),
                     SIGNAL(finished(Tp::PendingOperation*)),
-                    SLOT(expectSuccessfulCall(Tp::PendingOperation*))));
-    QCOMPARE(mLoop->exec(), 1);
+                    SLOT(expectFailure(Tp::PendingOperation*))));
+    QCOMPARE(mLoop->exec(), 0);
 
     // stop dtmf (must fail)
     QVERIFY(connect(stream->stopDTMFTone(),
                     SIGNAL(finished(Tp::PendingOperation*)),
-                    SLOT(expectSuccessfulCall(Tp::PendingOperation*))));
-    QCOMPARE(mLoop->exec(), 1);
+                    SLOT(expectFailure(Tp::PendingOperation*))));
+    QCOMPARE(mLoop->exec(), 0);
 }
 
 void TestStreamedMediaChan::testDTMFNoContinuousTone()
@@ -1347,8 +1347,8 @@ void TestStreamedMediaChan::testDTMFNoContinuousTone()
     // stop dtmf (must fail)
     QVERIFY(connect(stream->stopDTMFTone(),
                     SIGNAL(finished(Tp::PendingOperation*)),
-                    SLOT(expectSuccessfulCall(Tp::PendingOperation*))));
-    QCOMPARE(mLoop->exec(), 1);
+                    SLOT(expectFailure(Tp::PendingOperation*))));
+    QCOMPARE(mLoop->exec(), 0);
 }
 
 void TestStreamedMediaChan::cleanup()

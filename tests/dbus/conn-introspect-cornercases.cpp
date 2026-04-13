@@ -141,9 +141,7 @@ void TestConnIntrospectCornercases::testSelfHandleChangeBeforeConnecting()
                     SLOT(expectSuccessfulCall(Tp::PendingOperation*))));
 
     QCOMPARE(mLoop->exec(), 0);
-    QVERIFY(op->isFinished());
     QVERIFY(mConn->isValid());
-    QVERIFY(op->isValid());
 
     QCOMPARE(static_cast<uint>(mConn->status()),
              static_cast<uint>(Tp::ConnectionStatusConnecting));
@@ -166,7 +164,6 @@ void TestConnIntrospectCornercases::testSelfHandleChangeBeforeConnecting()
     // Try to finish the SelfContact operation, running the mainloop for a while
 
     QCOMPARE(mLoop->exec(), 0);
-    QCOMPARE(op->isFinished(), true);
     QCOMPARE(mConn->isReady(Connection::FeatureCore), true);
     QCOMPARE(mConn->isReady(Connection::FeatureSelfContact), true);
     QCOMPARE(static_cast<uint>(mConn->status()),
@@ -205,15 +202,12 @@ void TestConnIntrospectCornercases::testSelfHandleChangeWhileBuilding()
 
     // Make the conn Connected, and with FeatureCore ready
 
-    PendingOperation *op = mConn->lowlevel()->requestConnect();
-    QVERIFY(connect(op,
+    QVERIFY(connect(mConn->lowlevel()->requestConnect(),
                     SIGNAL(finished(Tp::PendingOperation*)),
                     SLOT(expectSuccessfulCall(Tp::PendingOperation*))));
 
     QCOMPARE(mLoop->exec(), 0);
-    QVERIFY(op->isFinished());
     QVERIFY(mConn->isValid());
-    QVERIFY(op->isValid());
 
     QCOMPARE(static_cast<uint>(mConn->status()),
              static_cast<uint>(Tp::ConnectionStatusConnected));
@@ -223,8 +217,7 @@ void TestConnIntrospectCornercases::testSelfHandleChangeWhileBuilding()
 
     // Start introspecting the SelfContact feature
 
-    op = mConn->becomeReady(Connection::FeatureSelfContact);
-    QVERIFY(connect(op,
+    QVERIFY(connect(mConn->becomeReady(Connection::FeatureSelfContact),
                     SIGNAL(finished(Tp::PendingOperation*)),
                     SLOT(expectSuccessfulCall(Tp::PendingOperation*))));
 
@@ -236,7 +229,6 @@ void TestConnIntrospectCornercases::testSelfHandleChangeWhileBuilding()
 
     // Try to finish the SelfContact operation, running the mainloop for a while
     QCOMPARE(mLoop->exec(), 0);
-    QCOMPARE(op->isFinished(), true);
     QCOMPARE(mConn->isReady(Connection::FeatureCore), true);
     QCOMPARE(mConn->isReady(Connection::FeatureSelfContact), true);
     QCOMPARE(static_cast<uint>(mConn->status()),
@@ -319,15 +311,13 @@ void TestConnIntrospectCornercases::testSlowpath()
     g_free(name); name = nullptr;
     g_free(connPath); connPath = nullptr;
 
-    PendingOperation *op = mConn->becomeReady();
-    QVERIFY(connect(op,
+    QVERIFY(connect(mConn->becomeReady(),
                     SIGNAL(finished(Tp::PendingOperation*)),
                     SLOT(expectSuccessfulCall(Tp::PendingOperation*))));
 
     tp_tests_bug16307_connection_inject_get_status_return(bugConnService);
 
     QCOMPARE(mLoop->exec(), 0);
-    QCOMPARE(op->isFinished(), true);
     QCOMPARE(mConn->isReady(Connection::FeatureCore), true);
     QCOMPARE(static_cast<uint>(mConn->status()),
              static_cast<uint>(ConnectionStatusConnected));
@@ -367,21 +357,18 @@ void TestConnIntrospectCornercases::testStatusChange()
     // during core introspection, and we rather want to test the more general ReadinessHelper
     // mechanism
 
-    PendingOperation *op = mConn->becomeReady();
-    QVERIFY(connect(op,
+    QVERIFY(connect(mConn->becomeReady(),
                     SIGNAL(finished(Tp::PendingOperation*)),
                     SLOT(expectSuccessfulCall(Tp::PendingOperation*))));
 
     QCOMPARE(mLoop->exec(), 0);
-    QCOMPARE(op->isFinished(), true);
     QCOMPARE(mConn->isReady(Connection::FeatureCore), true);
     QCOMPARE(static_cast<uint>(mConn->status()),
              static_cast<uint>(ConnectionStatusDisconnected));
 
     // Now, begin making Connected ready
 
-    op = mConn->becomeReady(Connection::FeatureConnected);
-    QVERIFY(connect(op,
+    QVERIFY(connect(mConn->becomeReady(Connection::FeatureConnected),
                     SIGNAL(finished(Tp::PendingOperation*)),
                     SLOT(expectSuccessfulCall(Tp::PendingOperation*))));
 
@@ -407,7 +394,6 @@ void TestConnIntrospectCornercases::testStatusChange()
             TP_CONNECTION_STATUS_REASON_REQUESTED);
 
     QCOMPARE(mLoop->exec(), 0);
-    QCOMPARE(op->isFinished(), true);
     QCOMPARE(mConn->isReady(Connection::FeatureCore), true);
     QCOMPARE(mConn->isReady(Connection::FeatureConnected), true);
     QCOMPARE(static_cast<uint>(mConn->status()),
@@ -444,19 +430,16 @@ void TestConnIntrospectCornercases::testNoRoster()
     g_free(name); name = nullptr;
     g_free(connPath); connPath = nullptr;
 
-    PendingOperation *op = mConn->lowlevel()->requestConnect();
-    QVERIFY(connect(op,
+    QVERIFY(connect(mConn->lowlevel()->requestConnect(),
                     SIGNAL(finished(Tp::PendingOperation*)),
                     SLOT(expectSuccessfulCall(Tp::PendingOperation*))));
     QCOMPARE(mLoop->exec(), 0);
     QCOMPARE(mConn->status(), Tp::ConnectionStatusConnected);
 
-    op = mConn->becomeReady(Connection::FeatureRoster);
-    QVERIFY(connect(op,
+    QVERIFY(connect(mConn->becomeReady(Connection::FeatureRoster),
                     SIGNAL(finished(Tp::PendingOperation*)),
                     SLOT(expectSuccessfulCall(Tp::PendingOperation*))));
     QCOMPARE(mLoop->exec(), 0);
-    QVERIFY(op->isFinished());
     QVERIFY(mConn->isReady(Connection::FeatureRoster));
     QVERIFY(!mConn->actualFeatures().contains(Connection::FeatureRoster));
 }

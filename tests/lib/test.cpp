@@ -51,13 +51,7 @@ void Test::cleanupTestCaseImpl()
 
 void Test::expectSuccessfulCall(PendingOperation *op)
 {
-    if (op->isError()) {
-        qWarning().nospace() << op->errorName()
-            << ": " << op->errorMessage();
-        mLoop->exit(1);
-        return;
-    }
-
+    TEST_VERIFY_OP(op);
     mLoop->exit(0);
 }
 

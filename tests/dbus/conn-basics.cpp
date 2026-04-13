@@ -97,6 +97,7 @@ void TestConnBasics::expectPresenceAvailable(const Tp::SimplePresence &presence)
 
 void TestConnBasics::onRequestConnectFinished(Tp::PendingOperation *op)
 {
+    TEST_VERIFY_OP(op);
     QCOMPARE(mConn->status(), ConnectionStatusConnected);
     QVERIFY(mStatuses.contains(ConnectionStatusConnected));
     mLoop->exit(0);
@@ -149,19 +150,15 @@ void TestConnBasics::init()
                     SLOT(expectConnReady(Tp::ConnectionStatus))));
 
     qDebug() << "waiting connection to become connected";
-    PendingOperation *pr = mConn->becomeReady(Connection::FeatureConnected);
-    QVERIFY(connect(pr,
+    QVERIFY(connect(mConn->becomeReady(Connection::FeatureConnected),
                     SIGNAL(finished(Tp::PendingOperation*)),
                     SLOT(expectSuccessfulCall(Tp::PendingOperation*))));
 
-    PendingOperation *pc = mConn->lowlevel()->requestConnect();
-    QVERIFY(connect(pc,
+    QVERIFY(connect(mConn->lowlevel()->requestConnect(),
                     SIGNAL(finished(Tp::PendingOperation*)),
                     SLOT(onRequestConnectFinished(Tp::PendingOperation*))));
     QCOMPARE(mLoop->exec(), 0);
-    QCOMPARE(pr->isFinished(), true);
     QCOMPARE(mLoop->exec(), 0);
-    QCOMPARE(pc->isFinished(), true);
     QCOMPARE(mConn->isReady(Connection::FeatureConnected), true);
     qDebug() << "connection is now ready";
 
