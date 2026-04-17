@@ -1200,7 +1200,7 @@ void TextChannel::onTextSendError(uint error, uint timestamp, uint type,
 
     header.insert(QLatin1String("message-received"),
             QDBusVariant(static_cast<qlonglong>(
-#if QT_VERSION_CHECK(5, 8, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 8, 0)
                     QDateTime::currentDateTime().toTime_t())));
 #else
                     QDateTime::currentDateTime().toSecsSinceEpoch())));
