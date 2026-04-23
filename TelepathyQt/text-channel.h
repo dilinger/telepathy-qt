@@ -30,12 +30,12 @@
 #include <TelepathyQt/Channel>
 #include <TelepathyQt/PendingOperation>
 #include <TelepathyQt/PendingSendMessage>
+#include <TelepathyQt/ReceivedMessage>
 
 namespace Tp
 {
 
 class Message;
-class ReceivedMessage;
 
 class TP_QT_EXPORT TextChannel : public Channel
 {
