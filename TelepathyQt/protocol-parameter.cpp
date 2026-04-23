@@ -222,7 +222,11 @@ ParamSpec ProtocolParameter::bareParameter() const
     return mPriv->spec;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 uint qHash(const ProtocolParameter& parameter)
+#else
+size_t qHash(const ProtocolParameter& parameter)
+#endif
 {
     return qHash(parameter.name());
 }
