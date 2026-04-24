@@ -64,7 +64,11 @@ public:
 
     QString name() const;
     QDBusSignature dbusSignature() const;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QVariant::Type type() const;
+#else
+    QMetaType::Type type() const;
+#endif
     QVariant defaultValue() const;
 
     bool isRequired() const;
