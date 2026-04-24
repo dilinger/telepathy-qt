@@ -353,7 +353,7 @@ PendingOperation *OutgoingStreamTubeChannel::offerTcpSocket(
 
         setAddressType(SocketAddressTypeIPv4);
         setAccessControl(accessControl);
-        setIpAddress(qMakePair<QHostAddress, quint16>(hostAddress, port));
+        setIpAddress(qMakePair(hostAddress, port));
 
         SocketAddressIPv4 addr;
         addr.address = hostAddress.toString();
@@ -389,7 +389,7 @@ PendingOperation *OutgoingStreamTubeChannel::offerTcpSocket(
 
         setAddressType(SocketAddressTypeIPv6);
         setAccessControl(accessControl);
-        setIpAddress(qMakePair<QHostAddress, quint16>(hostAddress, port));
+        setIpAddress(qMakePair(hostAddress, port));
 
         SocketAddressIPv6 addr;
         addr.address = hostAddress.toString();
